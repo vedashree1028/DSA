@@ -1,4 +1,4 @@
-## infix to postfix::
+// infix to postfix::
 #include<iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,7 +86,7 @@ int main(){
 
 
 
-##infix to prefix::
+//infix to prefix::
 #include<iostream>
 #include <stdio.h>
 #include <stdlib.h>
