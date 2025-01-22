@@ -68,6 +68,31 @@ tree *search(tree *root , int key){
      
     }
 }
+tree *Delete(tree *root , int key){
+    if(root==NULL){
+        return root;
+    }
+    if(key < root->data){
+        root->left=Delete(root->left,key);
+    }
+    else if(key > root->data){
+        root->right=Delete(root->right,key);
+    }
+    else{
+
+        if(root->left==NULL){
+            tree *temp=root->right;
+            delete root;
+            return temp;
+        }
+        else if(root->right==NULL){
+            tree *temp=root->left;
+            delete root;
+            return temp;
+        }
+    }
+    return root;
+}
 int main(){
     
    tree *root = new tree(100);
@@ -95,7 +120,9 @@ int main(){
   else{
     cout<<"the node is not found"<<endl;
   }
-  
-    return 0;
+  root = Delete(root, 70);
+  cout<<"Tree after node deletion is :- "<<" ";
+  preorder(root); 
+   return 0;
 
 }
