@@ -69,38 +69,29 @@ tree *search(tree *root , int key){
     }
 }
 tree *Delete(tree *root , int key){
-    if (root == nullptr)
+    if (root == NULL)
         return root;
 
-    // If the data to be deleted is smaller than the root's data, go left
     if (key < root->data) {
         root->left = Delete(root->left, key);
     }
-    // If the data to be deleted is greater than the root's data, go right
+    
     else if (key > root->data) {
         root->right = Delete(root->right, key);
     }
-    // If data matches, this is the node to be deleted
+    
     else {
-        // **Case 1: Node has NO CHILDREN (Leaf Node)**
-        if (root->left == nullptr && root->right == nullptr) {
-            delete root;
-            return nullptr;
-        }
+        
+        tree* temp;
+        if (root->left != NULL) {
+            temp = root->left;  
+            }       
+            else {
+             temp = root->right; 
+            }
+            delete root;  
+            return temp;  
 
-        // **Case 2: Node has ONE CHILD (Left Child Only)**
-        else if (root->left != nullptr && root->right == nullptr) {
-            tree* temp = root->left;
-            delete root;
-            return temp;
-        }
-
-        // **Case 3: Node has ONE CHILD (Right Child Only)**
-        else if (root->right != nullptr && root->left == nullptr) {
-            tree* temp = root->right;
-            delete root;
-            return temp;
-        }
     }
     return root;
 }
@@ -143,47 +134,90 @@ void display_level(tree* root) {
         display_level(root->right->left);
         display_level(root->right->right);
     }
+    
 }
 int main(){
-    
-   tree *root = new tree(100);
-    root=insert(root , 50);
-    root=insert(root , 150);
-    root=insert(root , 70);
-    //root=insert(root , 20);
-    root=insert(root , 120);
-    root=insert(root , 180);
-    root=insert(root , 10);
-
-    cout<<"displaying tree in inorder traversal:"<<"  ";
-    inorder(root);
-    cout<<endl;
-  /*  cout<<"displaying tree in preorder traversal:"<<"  ";
-    preorder(root);
-    cout<<endl;
-    cout<<"displaying tree in postorder traversal:"<<"  ";
-    postorder(root);
-    cout<<endl;
-  tree *tofound =  search(root , 100);
-  if(tofound!=NULL){
-    cout<<"the node is found"<<endl;
-  }
-  else{
-    cout<<"the node is not found"<<endl;
-  }
-    */
-  root = Delete(root, 50);
-  //cout<<"displaying tree in inorder traversal:"<<"  ";
-  inorder(root);
-  //cout<<endl;
-  cout<<"Tree after node deletion is :- "<<" ";
-  //preorder(root); 
-
- /* cout<<"level wise display:";
-  display_level(root);
-  cout<<endl;
-  cout<<"the copy of original tree is:";
-  copy(root);*/
-   return 0;
-
+    tree *root = NULL;
+    int choice ;
+    do{
+        cout<<"1.INSERT\n2.INORDER DISPLAY\n3.PREORDER DISPLAY\n4.POSTORDER DISPLAY\n5.SEARCHING\n6.DELETE\n7.LEVEL-WISE DISPLAY\n8.COPY OF TREE\n9.MIRROR OF TREE\n10.EXIT\n";
+        cout<<"Enter your choices:";
+        cin>>choice;
+        switch(choice){
+            case 1:{
+               cout<<"Inserting in Tree:";
+               root = new tree(100);
+               root=insert(root , 50);
+                root=insert(root , 150);
+                root=insert(root , 70);
+                root=insert(root , 20);
+                root=insert(root , 120);
+                root=insert(root , 180);
+                root=insert(root , 10);
+            
+                 break;
+            }
+            case 2:{
+                cout<<"displaying tree in inorder traversal:"<<"  ";
+               inorder(root);
+                cout<<endl;
+               break;
+            }
+           case 3:{
+               cout<<"displaying tree in inorder traversal:"<<"  ";
+               inorder(root);
+                cout<<endl;
+                break;
+           }
+           case 4:{
+               cout<<"displaying tree in postorder traversal:"<<"  ";
+               postorder(root);
+               cout<<endl; 
+               break;
+           }
+           case 5:{
+                tree *tofound =  search(root , 100);
+                if(tofound!=NULL){
+                    cout<<"the node is found"<<endl;
+                 }
+                else{
+                     cout<<"the node is not found"<<endl;
+                }
+                break;
+            }
+           case 6:{
+               cout<<"Tree after node deletion is :- "<<" ";
+               Delete(root,20);
+               inorder(root);
+               cout<<endl;
+               break;
+           }
+           case 7:{
+               cout<<"level wise display:";
+               display_level(root);
+               cout<<endl; 
+               break;
+           }
+           case 8:{
+                cout<<"the copy of original tree is:";
+                copy(root);
+                break;
+           }   
+           case 9:{
+                cout<<"mirrro of tree:";
+                mirror(root);
+                inorder(root);
+                cout<<endl;
+                break;
+           }   
+           case 10:{
+                 cout<<"EXIT"<<endl;
+                 break;
+           }
+        }
+        cout << "Do you want to continue (1 for Yes, any other key for No): ";
+                   cin >> choice;
+         }  while (choice == 1);
+         
+         return 0;
 }
