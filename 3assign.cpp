@@ -1,89 +1,108 @@
 #include<iostream>
 using namespace std;
-class Tree{
-    public:
+#define max_nodes 100
+class graph{
 
-    int data;
-    Tree *left;
-    Tree *right;
+   public:
+   int vertices;
+   int adj[max_nodes][max_nodes];
 
-    Tree(){
-        data=0;
-        left=NULL;
-        right=NULL;
+   graph(int v){
+    vertices=v;
+    for(int i=0 ; i<v ; i++){
+        for(int j=0 ; j<v ; j++){
+            adj[i][j]=0;
+        }
     }
+   }
 
-    Tree(int d){
-        data=d;
-        left=NULL;
-        right=NULL;
+   void addedge(int s , int d){
+        adj[s][d]=1;
+        adj[d][s]=1;
+   }
+
+   void display(){
+    for(int i = 0; i < vertices; i++) {
+        for(int j = 0; j < vertices; j++) {
+            cout << adj[i][j] << " ";
+        }
+        cout << endl;
     }
+   }
+
+   void BFS(int start){
+     int visited[max_nodes] = {0};
+     int queue[max_nodes];
+     int front =0;
+     int rear =0;
+
+     visited[start]=1;
+     queue[rear]=start;
+     rear++;
+
+     while(front < rear){
+        int node = queue[front];
+        front++;
+        cout<<node<<" ";
+        
+        for(int i=0 ; i<vertices; i++){
+            if(adj[node][i] == 1 && visited[i]==0){
+                queue[rear]=i;
+                visited[i]=1;
+                rear++;
+            }
+        }
+     }
+     cout<<endl;
+     for(int i=0 ; i<vertices ; i++){
+        cout<<visited[i]<<" ";
+     }
+   }
+
+   void DFS(int start){
+    int visited[max_nodes] ={0};
+    int stack[max_nodes];
+    int top=-1;
+
+    stack[++top]=start;
+    while(top>=0){
+        int node=stack[top--];
+        if(visited[node]==0){
+            cout<<node<<" ";
+        }
+        visited[node]=1;
+        for(int i = vertices - 1; i >= 0; i--) { 
+            if(adj[node][i] == 1 && visited[i] == 0) {
+                stack[++top] = i;
+            }
+        }
+        }
+    }
+   
+
 };
-Tree *insert(Tree *node , int key ){
-    if(node==NULL){
-        return new Tree(key);
-    }
+int main() {
+    
+    graph g(5); 
 
-    if(node->data==key){
-        return node;
-    }
+    g.addedge(0, 1);
+    g.addedge(1, 2);
+    g.addedge(2, 3);
+    g.addedge(3, 4);
+    g.addedge(4, 0);
 
-    if(node->data > key){
-        node->left=insert(node->left,key);
-    }
+    cout << "Adjacency Matrix:" << endl;
+    g.display();
 
-    else if(node->data<key){
-        node->right=insert(node->right,key);
-    }
-}
-int height(Tree *root){
-    if(root==NULL){
-        return -1;
-        return 1 + max(height(root->left) , height(root->right));
-    }
-}
-void display_BFS(Tree *root , int level){
-    if(root==NULL){
-        return ;
-    }
-    if(level==1){
-    cout<<root->data<<" ";
-    }
-    else{
-         display_BFS(root->left , level-1);
-         display_BFS(root->right , level-1);
-    }
-}
-void BFS(Tree * root){
-    int h = height(root);
-
-    for(int i=1 ; i<=h ; i++){
-        display_BFS(root , i);
-    }
-}
-void display_DFS(Tree *root) {
-    if (root == NULL) {
-        return;
-    }
-
-    cout << root->data << " ";  
-    display_DFS(root->left);    
-    display_DFS(root->right);   
-}
-
-int main(){
-    Tree *root= new Tree(90);
-    root=insert(root , 50);
-    root=insert(root , 150);
-    root=insert(root , 70);
-    root=insert(root , 120);
-    root=insert(root , 180);
-    root=insert(root , 10);
     cout<<endl;
-    cout<<"bfs display:"<<endl;
-    BFS(root);
+
+    cout<<"BFS display:"<<" ";
+    g.BFS(0);
+
     cout<<endl;
-    cout<<"dfs display:"<<endl;
-    display_DFS(root);
-    cout<<endl;
+
+    cout<<"DFS display:"<<" ";
+    g.DFS(0);
+    
+    return 0;
 }
